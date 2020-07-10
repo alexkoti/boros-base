@@ -34,20 +34,17 @@
              * Obrigatório 'menu_header' salvo no admin, mostrar alerta caso não encontrado
              * 
              */
-            $menu_locations = get_nav_menu_locations();
-            if( isset($menu_locations['menu_header'] ) ){
-                $args = array(
-                    'theme_location'  => 'menu_header', 
-                    'container'       => false,
-                    'container_class' => 'menu-principal',
-                    'menu_class'      => 'navbar-nav mr-auto',
-                    'walker'          => new bootstrap_nav_menu_walker
-                );
-                wp_nav_menu($args);
-            }
-            else{
-                pam('Menu Principal não definido. <a href="' . admin_url('nav-menus.php') . '">Criar um menu no admin</a>, e definir na localização "Slot Cabeçalho"', 'danger', 'MENU');
-            }
+            $args = array(
+                'theme_location' => 'menu_header', 
+                'menu_id'        => false,
+                'menu_class'     => 'menu',
+                'container'      => 'div',
+                'container_id'   => 'menu-header',
+                'fallback_cb'    => function(){
+                    pam('Menu Principal não definido. <a href="' . admin_url('nav-menus.php') . '">Criar um menu no admin</a>, e definir na localização "Slot Cabeçalho"', 'danger', 'MENU');
+                }
+            );
+            wp_nav_menu($args);
             ?>
             
             <?php echo custom_search_form('search-header', 'navbar-form navbar-right'); ?>
